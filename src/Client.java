@@ -9,6 +9,7 @@ public class Client {
             System.out.println("client started");
             client = new Socket("localHost", 8080);
 
+            //reads keyboard and sends message and reads server's message
             BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("enter a string");
             String str = userInput.readLine();
