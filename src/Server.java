@@ -17,6 +17,7 @@ public class Server { /* starting with the connection
             Socket client = server.accept();
             System.out.println("connection established");
 
+            //new changes for server to take message and send it back to client
             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             String str = in.readLine();
             PrintWriter out = new PrintWriter(client.getOutputStream(),true);
