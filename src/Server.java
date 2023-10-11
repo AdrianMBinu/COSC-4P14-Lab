@@ -11,9 +11,17 @@ public class Server { /* starting with the connection
 
     public Server () {
         try {
+            System.out.println("waiting for clients");
             connections = new ArrayList<>();
             server = new ServerSocket(8080);
             Socket client = server.accept();
+            System.out.println("connection established");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            String str = in.readLine();
+            PrintWriter out = new PrintWriter(client.getOutputStream(),true);
+            out.println("Server says:"+str);
+            
             RoomConnection incomingConnection = new RoomConnection(client);
             connections.add(incomingConnection);
         } catch (Exception totalFailure) {
