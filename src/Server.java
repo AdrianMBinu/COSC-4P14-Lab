@@ -11,20 +11,14 @@ public class Server { /* starting with the connection
 
     public Server () {
         try {
-            System.out.println("waiting for clients");
+            System.out.println("Waiting for clients");
             connections = new ArrayList<>();
             server = new ServerSocket(8080);
             Socket client = server.accept();
             System.out.println("connection established");
-
-            //new changes for server to take message and send it back to client
-            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            String str = in.readLine();
-            PrintWriter out = new PrintWriter(client.getOutputStream(),true);
-            out.println("Server says:"+str);
-            
             RoomConnection incomingConnection = new RoomConnection(client);
             connections.add(incomingConnection);
+            new Thread(incomingConnection).start();
         } catch (Exception totalFailure) {
             closeServer();
         }
@@ -48,7 +42,7 @@ public class Server { /* starting with the connection
         }
     }
 
-    class RoomConnection {
+    class RoomConnection implements Runnable {
 
         Socket client; // assigned socket of connection
         Scanner in; // client input
@@ -63,7 +57,7 @@ public class Server { /* starting with the connection
             out.println(msg);
         }
 
-        public void processMessages () {
+        public void processMessages() {
             try {
                 in = new Scanner(client.getInputStream());
                 out = new PrintWriter(client.getOutputStream(),true);
@@ -71,21 +65,29 @@ public class Server { /* starting with the connection
                 String toSend;
                 while (in.hasNextLine()) {
                     toSend = in.nextLine();
-                    broadcast(toSend);
+                    if (toSend.equals("\\quit")) {
+                        disconnect();
+                    } else broadcast(toSend);
                 }
             } catch (Exception ignored) {}
         }
 
         public void disconnect () {
             try {
+                sendMessageTo("You've been disconnected");
                 in.close();
                 out.close();
                 if (!client.isClosed()) {
                     client.close();
                 }
+                Thread.currentThread().join();
             } catch (Exception ignored) {}
         }
 
+        @Override
+        public void run() {
+            processMessages();
+        }
     }
 
     public static void main(String[] args) {
