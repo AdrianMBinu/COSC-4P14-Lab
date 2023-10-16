@@ -1,3 +1,11 @@
+/*
+*	Lab Ex 1
+*	Brett Terpstra bt19ex 6920201
+*	Michael Bulous
+*	Adrian
+*/
+
+
 import java.io.*;
 import java.net.*;
 import java.util.Arrays;
