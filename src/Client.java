@@ -2,7 +2,7 @@
 *	Lab Ex 1
 *	Brett Terpstra bt19ex 6920201
 *	Michael Bulous
-*	Adrian
+*	Adrian Binu ab19xe 6970677
 */
 
 
