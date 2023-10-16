@@ -14,11 +14,13 @@ public class Server { /* starting with the connection
             System.out.println("Waiting for clients");
             connections = new ArrayList<>();
             server = new ServerSocket(8080);
-            Socket client = server.accept();
-            System.out.println("connection established");
-            RoomConnection incomingConnection = new RoomConnection(client);
-            connections.add(incomingConnection);
-            new Thread(incomingConnection).start();
+            while (true) {
+                Socket client = server.accept();
+                System.out.println("connection established");
+                RoomConnection incomingConnection = new RoomConnection(client);
+                connections.add(incomingConnection);
+                new Thread(incomingConnection).start();
+            }
         } catch (Exception totalFailure) {
             closeServer();
         }
@@ -65,9 +67,20 @@ public class Server { /* starting with the connection
                 String toSend;
                 while (in.hasNextLine()) {
                     toSend = in.nextLine();
-                    if (toSend.equals("\\quit")) {
-                        disconnect();
-                    } else broadcast(toSend);
+                    switch (toSend) {
+                        case "\\quit":
+                            disconnect();
+                            break;
+                        case "\\me":
+                            // needs to be handled
+                            break;
+                        case ":)":
+                            broadcast("😀");
+                            break;
+                        default:
+                            broadcast(toSend);
+                            break;
+                    }
                 }
             } catch (Exception ignored) {}
         }
