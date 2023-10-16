@@ -7,6 +7,7 @@ public class Client {
 
     Socket client;
     Thread listenerThread;
+    String username = "Anonymous";
 
     public Client() {
         try {
@@ -44,7 +45,27 @@ public class Client {
                 }
                 if (userInput.ready()) {
                     String str = userInput.readLine();
-                    out.println(str);
+                    if (str.startsWith("/")){
+                        String[] input = str.split(" ");
+                        if (input[0].equals("/username")) {
+                            if (input.length == 1)
+                                System.err.println("Username not provided!");
+                            else {
+                                if (input[1].length() <= 2)
+                                    System.err.println("Username must be at least 2 characters!");
+                                else
+                                    username = input[1];
+                            }
+                        }
+                        if (input[0].equals("/me")){
+                            if (input.length == 1)
+                                System.err.println("Please provide text you wish to /me!");
+                            else
+                                out.println("*" + username + str.substring(3) + "*");
+                        }
+                    } else {
+                        out.println("<" + username + "> " + str);
+                    }
                 }
             }
 
