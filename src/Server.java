@@ -67,20 +67,12 @@ public class Server { /* starting with the connection
                 String toSend;
                 while (in.hasNextLine()) {
                     toSend = in.nextLine();
-                    switch (toSend) {
-                        case "\\quit":
-                            disconnect();
-                            break;
-                        case "\\me":
-                            // needs to be handled
-                            break;
-                        case ":)":
-                            broadcast("😀");
-                            break;
-                        default:
-                            broadcast(toSend);
-                            break;
-                    }
+                    broadcast(toSend);
+                    if (toSend.contains(">")) {
+                        String[] data = toSend.split(">");
+                        System.out.println("Client <" + data[0].substring(1) + "> sent message: " + data[1].substring(1));
+                    } else
+                        System.out.println("Raw message sent: " + toSend);
                 }
             } catch (Exception ignored) {}
         }

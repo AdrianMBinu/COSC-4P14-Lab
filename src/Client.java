@@ -1,13 +1,29 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.*;
+import java.util.Arrays;
+import java.util.Base64;
 
 public class Client {
 
     Socket client;
     Thread listenerThread;
     String username = "Anonymous";
+
+    private String formatString(String str){
+        return "<" + username + "> " + str;
+    }
+
+    private void write(PrintWriter out, String str){
+        out.println(encrypt(str));
+    }
+
+    public static String encrypt(String str){
+        return Base64.getEncoder().encodeToString(str.getBytes());
+    }
+
+    public static String decypt(String str){
+        return new String(Base64.getDecoder().decode(str));
+    }
 
     public Client() {
         try {
@@ -27,7 +43,7 @@ public class Client {
                                 in.close();
                                 break;
                             }else if (in.ready()) {
-                                System.out.println(in.readLine());
+                                System.out.println(decypt(in.readLine()));
                             }
                         } catch (Exception failuretoRead) {}
                     }
@@ -56,15 +72,22 @@ public class Client {
                                 else
                                     username = input[1];
                             }
+                            continue;
                         }
-                        if (input[0].equals("/me")){
+                        if (input[0].equals("/me")) {
                             if (input.length == 1)
                                 System.err.println("Please provide text you wish to /me!");
                             else
-                                out.println("*" + username + str.substring(3) + "*");
+                                out.println(encrypt("*" + username + str.substring(3) + "*"));
+                            continue;
                         }
+                        if (input[0].equals("/smile")){
+                            out.println(encrypt(formatString("😀")));
+                            continue;
+                        }
+                        out.println(encrypt(str));
                     } else {
-                        out.println("<" + username + "> " + str);
+                        out.println(encrypt(formatString(str)));
                     }
                 }
             }
