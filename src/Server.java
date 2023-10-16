@@ -1,7 +1,7 @@
 /*
 *       Lab Ex 1
 *       Brett Terpstra bt19ex 6920201
-*       Michael Bulous 
+*       Michael Boulos mb19ep 
 *       Adrian  
 */
 
