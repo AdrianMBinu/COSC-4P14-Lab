@@ -2,7 +2,7 @@
 *	Lab Ex 1
 *	Brett Terpstra bt19ex 6920201
 *	Michael Boulos mb19ep
-*	Adrian Binu ab19xe 6970677
+*	Adrian Mankuzhiyil Binu ab19xe 6970677
 */
 
 
